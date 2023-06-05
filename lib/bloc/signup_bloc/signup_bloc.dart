@@ -12,9 +12,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({required AuthRepo authRepo})
       : _authRepo = authRepo,
         super(SignUpState.initial()) {
+    on<SignUpNameChange>(_mapSignUpNameChangeToState);
     on<SignUpEmailChange>(_mapSignUpEmailChangeToState);
     on<SignUpPasswordChange>(_mapSignUpPasswordChangeToState);
     on<SignUpSubmitted>(_mapSignUpSubmittedToState);
+  }
+
+  void _mapSignUpNameChangeToState(
+      SignUpNameChange event, Emitter<SignUpState> emit) {
+    final isNameValid = Validators.isValidName(event.name);
+    emit(state.update(isNameValid: isNameValid));
   }
 
   void _mapSignUpEmailChangeToState(
@@ -33,7 +40,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       SignUpSubmitted event, Emitter<SignUpState> emit) async {
     emit(SignUpState.loading());
     try {
-      await _authRepo.signUp(email: event.email, password: event.password);
+      await _authRepo.signUp(
+          name: event.name, email: event.email, password: event.password);
       emit(SignUpState.success());
     } catch (_) {
       emit(SignUpState.failure());

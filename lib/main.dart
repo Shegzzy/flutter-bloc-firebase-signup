@@ -1,5 +1,5 @@
 import 'package:bloc_firebase/screens/home_screen.dart';
-import 'package:bloc_firebase/screens/signup_screen.dart';
+import 'package:bloc_firebase/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthFailure) {
-            return SignUpScreen(authRepo: _authRepo,);
+            return LoginScreen(authRepo: _authRepo,);
           }
 
           if (state is AuthSuccess) {

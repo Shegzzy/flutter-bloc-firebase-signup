@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
@@ -24,12 +25,26 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Center(
-            child: Text("Hello, ${user.email}"),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircleAvatar(
+              radius: 60,
+              backgroundImage: AssetImage('lib/assets/images/avatar.png'),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Name: ${user.displayName ?? 'N/A'}',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Email: ${user.email ?? 'N/A'}',
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }

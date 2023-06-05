@@ -53,7 +53,7 @@ class _LoginFormState extends State<LoginForm> {
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Login Failed'),
+                  Text('Login Failed!!!'),
                   Icon(Icons.error),
                 ],
               ),
@@ -82,6 +82,19 @@ class _LoginFormState extends State<LoginForm> {
         }
 
         if (state.isSuccess) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Logged In'),
+                  Icon(Icons.check_circle_rounded, color: Colors.cyanAccent,)
+                ],
+              ),
+              backgroundColor: Color(0xffffae88),
+            ),
+          );
           BlocProvider.of<AuthBloc>(context).add(
             AuthLoggedIn(),
           );

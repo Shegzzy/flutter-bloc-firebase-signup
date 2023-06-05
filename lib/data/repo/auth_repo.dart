@@ -4,27 +4,41 @@ class AuthRepo{
   final _firebaseAuth = FirebaseAuth.instance;
 
   //SignUp Method
-  Future<void>signUp({required String email, required String password}) async{
-    try{
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    }on
-      FirebaseAuthException catch(e){
-      if(e.code == 'weak-password'){
+  Future<void> signUp(
+      {required String name, required String email, required String password}) async {
+    try {
+      final UserCredential userCredential =
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      // Update user display name
+      await userCredential.user?.updateDisplayName(name);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
         throw Exception('This password is weak');
-    }else if(e.code == 'email-already-in-use'){
+      } else if (e.code == 'email-already-in-use') {
         throw Exception('Email taken');
+      } else {
+        throw Exception(e.message);
       }
-    }catch(e){
+    } catch (e) {
       throw Exception(e.toString());
     }
   }
-
   //Sign In Method
   Future<void> signIn({required String email, required String password}) async{
     try{
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-    }catch(e){
-      throw Exception(e.toString());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw Exception('User not found');
+      } else if (e.code == 'wrong-password') {
+        throw Exception('Wrong password');
+      } else {
+        throw Exception('Sign in failed');
+      }
+    } catch (e) {
+      throw Exception('Sign in failed');
     }
   }
 

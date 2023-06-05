@@ -21,11 +21,12 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+ final TextEditingController _nameController = TextEditingController();
  final TextEditingController _emailController = TextEditingController();
  final TextEditingController _passwordController = TextEditingController();
 
  bool get isPopulated =>
-     _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+     _nameController.text.isNotEmpty && _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
  bool isButtonEnabled(SignUpState state) {
    return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -37,6 +38,7 @@ class _SignUpFormState extends State<SignUpForm> {
  void initState() {
    super.initState();
    _signUpBloc = BlocProvider.of<SignUpBloc>(context);
+   _nameController.addListener(_onNameChange);
    _emailController.addListener(_onEmailChange);
    _passwordController.addListener(_onPasswordChange);
  }
@@ -50,12 +52,14 @@ class _SignUpFormState extends State<SignUpForm> {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Sign Up Failed'),
-                  Icon(Icons.error),
-                ],
+              content: Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Sign Up Failed'),
+                    Icon(Icons.error),
+                  ],
+                ),
               ),
               backgroundColor: Color(0xffffae88),
             ),
@@ -81,8 +85,22 @@ class _SignUpFormState extends State<SignUpForm> {
         }
 
         if (state.isSuccess) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Signed In'),
+                  Icon(Icons.check_circle_rounded, color: Colors.cyanAccent)
+                ],
+              ),
+              backgroundColor: Color(0xffffae88),
+            ),
+          );
           BlocProvider.of<AuthBloc>(context).add(
             AuthLoggedIn(),
+            
           );
           Navigator.pop(context);
         }
@@ -94,6 +112,22 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Form(
               child: Column(
                 children: [
+                  CustomTextField(
+                    labelText: "Full Name",
+                    autoCorrect: false,
+                    validator: (_) {
+                      return !state.isNameValid ? 'Invalid Name' : null;
+                    },
+                    controller: _nameController,
+                    iconData: const Icon(Icons.email_sharp, color: Colors.lightBlue,),
+                    keyboardType: TextInputType.emailAddress,
+                    textStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  ),
+                  const SizedBox(height: 30,),
                   CustomTextField(
                     labelText: "Email",
                     autoCorrect: false,
@@ -135,7 +169,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         }
                       },
                     icon: const Icon(
-                      Icons.login,
+                      Icons.check_rounded,
                       color: Colors.white,
                   ),
                   ),
@@ -152,12 +186,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                   fontWeight: FontWeight.w600),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen(authRepo: widget.authRepo)
-                                    ),
-                                  );
+                                  Navigator.pop(context);
                                 })
                         ]),
                   )
@@ -173,10 +202,15 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
+
+ void _onNameChange() {
+   _signUpBloc.add(SignUpNameChange(name: _nameController.text));
+ }
 
  void _onEmailChange() {
    _signUpBloc.add(SignUpEmailChange(email: _emailController.text));
@@ -188,7 +222,10 @@ class _SignUpFormState extends State<SignUpForm> {
 
  void _onFormSubmitted() {
    _signUpBloc.add(SignUpSubmitted(
-       email: _emailController.text, password: _passwordController.text));
+     name: _nameController.text,
+     email: _emailController.text,
+     password: _passwordController.text,
+   ));
  }
 
 }

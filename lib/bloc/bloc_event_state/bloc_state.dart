@@ -5,8 +5,7 @@ abstract class AuthState extends Equatable{
   const AuthState();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class Loading extends AuthState{
@@ -18,10 +17,10 @@ class AuthInitialize extends AuthState{}
 
 class AuthSuccess extends AuthState{
   final User user;
-  AuthSuccess(this.user);
+  const AuthSuccess(this.user);
 
   @override
-  List<Object?> get props => [user];
+  List<Object> get props => [user];
 }
 
 class AuthFailure extends AuthState{}

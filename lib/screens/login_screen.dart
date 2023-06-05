@@ -1,7 +1,6 @@
 import 'package:bloc_firebase/bloc/login_bloc/login_bloc.dart';
 import 'package:bloc_firebase/data/repo/auth_repo.dart';
 import 'package:bloc_firebase/forms/login_form.dart';
-import 'package:bloc_firebase/forms/signup_form.dart';
 import 'package:bloc_firebase/widgets/curved.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

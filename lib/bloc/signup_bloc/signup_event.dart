@@ -5,6 +5,15 @@ abstract class SignUpEvent extends Equatable{
   List<Object> get props => [];
 }
 
+class SignUpNameChange extends SignUpEvent{
+  final String name;
+
+  SignUpNameChange({required this.name});
+
+  @override
+  List<Object> get props => [name];
+}
+
 class SignUpEmailChange extends SignUpEvent{
   final String email;
 
@@ -24,10 +33,11 @@ class SignUpPasswordChange extends SignUpEvent{
 }
 
 class SignUpSubmitted extends SignUpEvent{
+  final String name;
   final String email;
   final String password;
 
-  SignUpSubmitted({required this.email, required this.password});
+  SignUpSubmitted({required this.name, required this.email, required this.password});
 
   @override
   List<Object> get props => [email, password];
