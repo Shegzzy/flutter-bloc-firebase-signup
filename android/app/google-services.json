@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "353315122333",
+    "project_id": "signupbloc",
+    "storage_bucket": "signupbloc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353315122333:android:e0ab39ce306a1c116ab874",
+        "android_client_info": {
+          "package_name": "com.example.bloc_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353315122333-4jj0dhd1kdlg0qkv4b7mn4mc60ggmh6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5If6D7y4HnT29-aGsWEG3LPIBKLuhkaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353315122333-4jj0dhd1kdlg0qkv4b7mn4mc60ggmh6f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "353315122333-ft35q9jsgpmailqod98neo1vv1bmq5rf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.blocFirebase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
